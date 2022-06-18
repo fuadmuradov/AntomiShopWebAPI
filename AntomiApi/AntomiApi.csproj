@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Antomi.Data\Antomi.Data.csproj" />
+    <ProjectReference Include="..\Antomi.Service\Antomi.Service.csproj" />
   </ItemGroup>
 
 </Project>

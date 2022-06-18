@@ -15,11 +15,13 @@ namespace Antomi.Data
         {               
         }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Testimonial> Testimonials { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new TestimonialConfiguration());
         }
     }
 }

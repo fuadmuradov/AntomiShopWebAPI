@@ -1,4 +1,6 @@
+using Antomi.Core.IRepositories;
 using Antomi.Data;
+using Antomi.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +39,8 @@ namespace AntomiApi
             services.AddDbContext<AntomiDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITestimonialRepository, TestimonialRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
