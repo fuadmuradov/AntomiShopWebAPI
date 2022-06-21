@@ -1,5 +1,6 @@
 ﻿using Antomi.Core.IRepositories;
 using Antomi.Service.DTOs.CategoryDTOs;
+using Antomi.Service.Exceptions;
 using Antomi.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,34 +21,66 @@ namespace AntomiApi.Controllers
         {
             this.categoryService = categoryService;
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Create(CategoryPostDto categoryPost)
         {
-            var response = await categoryService.CreateAsync(categoryPost);
-            return StatusCode(201, response);
+            try
+            {
+                var response = await categoryService.CreateAsync(categoryPost);
+                return StatusCode(201, response);
+            }
+            catch (RecordDublicateException exp)
+            {
+
+                return Conflict(exp);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CategoryPostDto categoryPost)
         {
-            var response = await categoryService.UpdateAsync(id, categoryPost);
+            try
+            {
+                var response = await categoryService.UpdateAsync(id, categoryPost);
 
-            return StatusCode(200, response);
+                return StatusCode(200, response);
+            }
+            catch (ItemNotFoundException exp)
+            {
+                return NotFound(exp.Message);
+            }
+            catch (RecordDublicateException exp)
+            {
+                return Conflict(exp.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await categoryService.Delete(id);
-            return StatusCode(200);
+            try
+            {
+                await categoryService.Delete(id);
+                return StatusCode(200);
+            }
+            catch (ItemNotFoundException exp)
+            {
+                return NotFound(exp.Message);               
+            }
         }
 
-
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var response = await categoryService.GetByIdAsync(id);
-
-            return StatusCode(200, response);
+            //try
+            //{
+            //    return Ok(await categoryService.GetByIdAsync(id));
+            //}
+            //catch (ItemNotFoundException exp)
+            //{
+            //    return StatusCode(404, exp.Message);
+            //}
+            return Ok(await categoryService.GetByIdAsync(id));
         }
 
     }

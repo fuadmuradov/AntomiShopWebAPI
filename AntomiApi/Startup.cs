@@ -1,8 +1,14 @@
 using Antomi.Core.IRepositories;
 using Antomi.Data;
 using Antomi.Data.Repositories;
+using Antomi.Service.Exceptions;
+using Antomi.Service.Implementations;
+using Antomi.Service.Interfaces;
+using AntomiApi.ServiceExtensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +17,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace AntomiApi
@@ -40,6 +48,7 @@ namespace AntomiApi
             options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITestimonialRepository, TestimonialRepository>();
         }
 
@@ -53,6 +62,9 @@ namespace AntomiApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AntomiApi v1"));
             }
 
+
+
+            app.UseCustomExceptionHandler();
             app.UseHttpsRedirection();
 
             app.UseRouting();
