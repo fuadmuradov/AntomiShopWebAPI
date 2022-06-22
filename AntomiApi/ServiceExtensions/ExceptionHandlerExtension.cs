@@ -32,6 +32,10 @@ namespace AntomiApi.ServiceExtensions
                         {
                             statusCode = 409;
                         }
+                        else if (contextFeature.Error is PageIndexIncorrectException)
+                        {
+                            statusCode = 400;
+                        }
                     }
                     context.Response.StatusCode = 400;
                     context.Response.ContentType = "application/json";

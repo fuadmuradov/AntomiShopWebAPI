@@ -83,5 +83,11 @@ namespace AntomiApi.Controllers
             return Ok(await categoryService.GetByIdAsync(id));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int PageIndex)
+        {
+            return Ok(await categoryService.GetAll(PageIndex));
+        }
+
     }
 }

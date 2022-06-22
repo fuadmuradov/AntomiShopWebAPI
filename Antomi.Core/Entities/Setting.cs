@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Antomi.Core.Entities
 {
-    public class Category:BaseEntity
+    public class Setting
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 }

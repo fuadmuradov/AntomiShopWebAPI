@@ -1,10 +1,14 @@
+using Antomi.Core;
 using Antomi.Core.IRepositories;
 using Antomi.Data;
 using Antomi.Data.Repositories;
+using Antomi.Service.DTOs.CategoryDTOs;
 using Antomi.Service.Exceptions;
 using Antomi.Service.Implementations;
 using Antomi.Service.Interfaces;
+using Antomi.Service.Profiles;
 using AntomiApi.ServiceExtensions;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +43,7 @@ namespace AntomiApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<CategoryPostDto>());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AntomiApi", Version = "v1" });
@@ -47,9 +51,10 @@ namespace AntomiApi
             services.AddDbContext<AntomiDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITestimonialRepository, TestimonialRepository>();
+            services.AddAutoMapper(x => x.AddProfile(new MapProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

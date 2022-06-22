@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antomi.Core.Entities
+namespace Antomi.Service.DTOs.MarkaDTOs
 {
-    public class Category:BaseEntity
+    public class MarkaGetDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

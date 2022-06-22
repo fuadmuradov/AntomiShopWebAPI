@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Antomi.Core.Entities
 {
-    public class Category:BaseEntity
+    public class Marka:BaseEntity
     {
         public string Name { get; set; }
     }

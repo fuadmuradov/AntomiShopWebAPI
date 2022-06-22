@@ -1,4 +1,5 @@
-﻿using Antomi.Service.DTOs.CategoryDTOs;
+﻿using Antomi.Service.DTOs;
+using Antomi.Service.DTOs.CategoryDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Antomi.Service.Interfaces
         Task<CategoryGetDto> CreateAsync(CategoryPostDto postDto);
         Task<CategoryGetDto> UpdateAsync(int id, CategoryPostDto postDto);
         Task<CategoryGetDto> GetByIdAsync(int id);
+        Task<PaginatedListDto<CategoryListItemDto>> GetAll(int PageIndex);
         Task Delete(int id);
     }
 }
