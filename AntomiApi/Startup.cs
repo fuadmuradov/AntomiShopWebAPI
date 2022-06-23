@@ -1,4 +1,5 @@
 using Antomi.Core;
+using Antomi.Core.Entities;
 using Antomi.Core.IRepositories;
 using Antomi.Data;
 using Antomi.Data.Repositories;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -51,9 +53,12 @@ namespace AntomiApi
             services.AddDbContext<AntomiDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<AntomiDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<ITestimonialRepository, TestimonialRepository>();
+           // services.AddScoped<IAboutService, AboutService>();
             services.AddAutoMapper(x => x.AddProfile(new MapProfile()));
         }
 

@@ -24,49 +24,29 @@ namespace AntomiApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryPostDto categoryPost)
         {
-            try
-            {
+           
                 var response = await categoryService.CreateAsync(categoryPost);
                 return StatusCode(201, response);
-            }
-            catch (RecordDublicateException exp)
-            {
-
-                return Conflict(exp);
-            }
+   
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CategoryPostDto categoryPost)
         {
-            try
-            {
+           
                 var response = await categoryService.UpdateAsync(id, categoryPost);
 
                 return StatusCode(200, response);
-            }
-            catch (ItemNotFoundException exp)
-            {
-                return NotFound(exp.Message);
-            }
-            catch (RecordDublicateException exp)
-            {
-                return Conflict(exp.Message);
-            }
+          
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
+           
                 await categoryService.Delete(id);
                 return StatusCode(200);
-            }
-            catch (ItemNotFoundException exp)
-            {
-                return NotFound(exp.Message);               
-            }
+           
         }
 
         [HttpGet("{id}")]

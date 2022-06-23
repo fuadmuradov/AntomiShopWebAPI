@@ -16,6 +16,9 @@ namespace Antomi.Data
     {
         ICategoryRepository categoryRepository;
         ISettingRepository settingRepository;
+        IAboutRepository aboutRepository;
+        ITestimonialRepository testimonialRepository;
+        IQuestionRepository questionRepository;
         private readonly AntomiDbContext context;
 
         public UnitOfWork(AntomiDbContext context)
@@ -26,6 +29,12 @@ namespace Antomi.Data
         public ICategoryRepository CategoryRepository => categoryRepository ?? new CategoryRepository(context);
 
         public ISettingRepository SettingRepository => settingRepository ?? new SettingRepository(context);
+
+        public IAboutRepository AboutRepository => aboutRepository ?? new AboutRepository(context);
+
+        public ITestimonialRepository TestimonialRepository => testimonialRepository ?? new TestimonialRepository(context);
+
+        public IQuestionRepository QuestionRepository => questionRepository ?? new QuestionRepository(context);
 
         public int Commit()
         {

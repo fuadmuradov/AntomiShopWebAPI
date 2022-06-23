@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antomi.Service.DTOs.TestimonialDTOs
+namespace Antomi.Core.Entities
 {
-    public class TestimonialGetDto
+    public class About
     {
         public int Id { get; set; }
         public string Image { get; set; }
-        public string Fullname { get; set; }
-        public string Jobname { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
+        public string Signature { get; set; }
+
     }
 }

@@ -22,7 +22,7 @@ namespace Antomi.Data.Repositories
            await context.Set<TEntity>().AddAsync(entity);
         }
 
-        public  IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> exp, params string[] includes)
+        public  IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>>exp, params string[] includes)
         {
             var query = context.Set<TEntity>().AsQueryable();
             if(includes != null)
