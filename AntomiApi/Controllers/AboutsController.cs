@@ -23,102 +23,113 @@ namespace AntomiApi.Controllers
         }
 
         //Get By Id
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetAbout(int id)
-        //{
-        //    var response = await aboutService.GetAboutAsync(id);
-        //    return Ok(response);
-        //}
-        //[HttpGet("Testimonial/{id}")]
-        //public async Task<IActionResult> GetTestimonial(int id)
-        //{
-        //    var response = await aboutService.GetTestimonialAsync(id);
-        //    return Ok(response);
-        //}
-        //[HttpGet("Question/{id}")]
-        //public async Task<IActionResult> GetQuestion(int id)
-        //{
-        //    var response = await aboutService.GetQuestionAsync(id);
-        //    return Ok(response);
-        //}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAbout(int id)
+        {
+            var response = await aboutService.GetAboutAsync(id);
+            return Ok(response);
+        }
+        [Route("Testimonial/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetTestimonial(int id)
+        {
+            var response = await aboutService.GetTestimonialAsync(id);
+            return Ok(response);
+        }
+        [Route("Question/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetQuestion(int id)
+        {
+            var response = await aboutService.GetQuestionAsync(id);
+            return Ok(response);
+        }
 
-        //Create
-     //[HttpPost]
-     //   public async Task<IActionResult> CreateAbout(AboutPostDto postDto)
-     //   {
-     //       var response = await aboutService.CreateAboutAsync(postDto);
-     //       return StatusCode(201, response);
-     //   }
+       // Create
+        [HttpPost]
+           public async Task<IActionResult> CreateAbout(AboutPostDto postDto)
+        {
+            var response = await aboutService.CreateAboutAsync(postDto);
+            return StatusCode(201, response);
+        }
 
-     //   [Route("CreateTestimonial")]
-     //   [HttpPost]
-     //   public async Task<IActionResult> CreateTestimonial(TestimonialPostDto postDto)
-     //   {
-     //       var response = await aboutService.CreateTestimonialAsync(postDto);
-     //       return StatusCode(201, response);
-     //   }
-     //   [Route("CreateQuestion")]
-     //   [HttpPost]
-     //   public async Task<IActionResult> CreateQuestion(QuestionPostDto postDto)
-     //   {
-     //       var response = await aboutService.CreateQuestionAsync(postDto);
-     //       return StatusCode(201, response);
-     //   }
+        [Route("CreateTestimonial")]
+        [HttpPost]
+        public async Task<IActionResult> CreateTestimonial(TestimonialPostDto postDto)
+        {
+            var response = await aboutService.CreateTestimonialAsync(postDto);
+            return StatusCode(201, response);
+        }
+        [Route("CreateQuestion")]
+        [HttpPost]
+        public async Task<IActionResult> CreateQuestion(QuestionPostDto postDto)
+        {
+            var response = await aboutService.CreateQuestionAsync(postDto);
+            return StatusCode(201, response);
+        }
 
-     //   //Update
-     //   [HttpPut("UpdateAbout/{id}")]
-     //   public async Task<IActionResult> UpdateAbout(int id,AboutPostDto postDto)
-     //   {
-     //       var response = await aboutService.UpdateAboutAsync(id, postDto);
-     //       return StatusCode(200, response);
-     //   }
+        //Update
+        [Route("UpdateAbout/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateAbout(int id, AboutPostDto postDto)
+        {
+            var response = await aboutService.UpdateAboutAsync(id, postDto);
+            return StatusCode(200, response);
+        }
 
-     //   [HttpPut("UpdateTestimonial/{id}")]
-     //   public async Task<IActionResult> UpdateTestimonial(int id, TestimonialPostDto postDto)
-     //   {
-     //       var response = await aboutService.UpdateTestimonialAsync(id, postDto);
-     //       return StatusCode(200, response);
-     //   }
+        [Route("UpdateTestimonial/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateTestimonial(int id, TestimonialPostDto postDto)
+        {
+            var response = await aboutService.UpdateTestimonialAsync(id, postDto);
+            return StatusCode(200, response);
+        }
 
-     //   [HttpPut("UpdateQuestion/{id}")]
-     //   public async Task<IActionResult> UpdateQuestion(int id, QuestionPostDto postDto)
-     //   {
-     //       var response = await aboutService.UpdateQuestionAsync(id, postDto);
-     //       return StatusCode(200, response);
-     //   }
+        [Route("UpdateQuestion/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateQuestion(int id, QuestionPostDto postDto)
+        {
+            var response = await aboutService.UpdateQuestionAsync(id, postDto);
+            return StatusCode(200, response);
+        }
 
-     //   //Delete
-     //   [HttpDelete("DeleteAbout/{id}")]
-     //   public async Task<IActionResult> DeleteAbout(int id)
-     //   {
-     //       return Ok(aboutService.DeleteAboutAsync(id));
-     //   }
+        //Delete
+        [Route("DeleteAbout/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAbout(int id)
+        {
+            await aboutService.DeleteAboutAsync(id);
+            return Ok();
+        }
 
-     //   [HttpDelete("DeleteTestimonial/{id}")]
-     //   public async Task<IActionResult> DeleteTestimonial(int id)
-     //   {
-     //       return Ok(aboutService.DeleteTestimonialAsync(id));
-     //   }
+        [HttpDelete("DeleteTestimonial/{id}")]
+        public async Task<IActionResult> DeleteTestimonial(int id)
+        {
+            await aboutService.DeleteTestimonialAsync(id);
+            return Ok();
+        }
 
-     //   [HttpDelete("DeleteQuestion/{id}")]
-     //   public async Task<IActionResult> DeleteQuestion(int id)
-     //   {
-     //       return Ok(aboutService.DeleteQuestionAsync(id));
-     //   }
+        [HttpDelete("DeleteQuestion/{id}")]
+        public async Task<IActionResult> DeleteQuestion(int id)
+        {
+            await aboutService.DeleteQuestionAsync(id);
+            return Ok();
+        }
 
-     //   //Get All
-     //   [HttpGet("GetAllQuestion/")]
-     //   public async Task<IActionResult> GetAllQuestion()
-     //   {
-     //       var response = aboutService.GetAllQuestion();
-     //       return Ok(response);
-     //   }
-     //   [HttpGet("GetAllTestimonial/")]
-     //   public async Task<IActionResult> GetAllTestimonial()
-     //   {
-     //       var response = aboutService.GetAllTestimonial();
-     //       return Ok(response);
-     //   }
+        //Get All
+        [Route("GetAllQuestion")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllQuestion()
+        {
+            var response = await aboutService.GetAllQuestion();
+            return Ok(response);
+        }
+        [Route("GetAllTestimonial")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTestimonial()
+        {
+            var response = await aboutService.GetAllTestimonial();
+            return Ok(response);
+        }
 
 
     }

@@ -1,5 +1,7 @@
 ﻿using Antomi.Core.IRepositories;
 using Antomi.Service.DTOs.CategoryDTOs;
+using Antomi.Service.DTOs.MarkaDTOs;
+using Antomi.Service.DTOs.SubCategoryDTOs;
 using Antomi.Service.Exceptions;
 using Antomi.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +23,7 @@ namespace AntomiApi.Controllers
         {
             this.categoryService = categoryService;
         }
+        [Route("CreateCategory")]
         [HttpPost]
         public async Task<IActionResult> Create(CategoryPostDto categoryPost)
         {
@@ -28,6 +31,22 @@ namespace AntomiApi.Controllers
                 var response = await categoryService.CreateAsync(categoryPost);
                 return StatusCode(201, response);
    
+        }
+
+        [Route("CreateMarka")]
+        [HttpPost]
+        public async Task<IActionResult> CreateMarka(MarkaPostDto postDto)
+        {
+            var response = await categoryService.CreateMarkaAsync(postDto);
+            return StatusCode(201, response);
+        }
+
+        [Route("CreateSubCategory")]
+        [HttpPost]
+        public async Task<IActionResult> CreateSubCategory(SubCategoryPostDto postDto)
+        {
+            var response = await categoryService.CreateSubCategoryAsync(postDto);
+            return StatusCode(201, response);
         }
 
         [HttpPut("{id}")]
@@ -40,6 +59,22 @@ namespace AntomiApi.Controllers
           
         }
 
+        [Route("UpdateMarka/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateMarka(int id, MarkaPostDto postDto)
+        {
+            var response = await categoryService.UpdateMarkaAsync(id, postDto);
+            return Ok(response);
+        }
+
+        [Route("UpdateSubCategory/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateSubCategory(int id, SubCategoryPostDto postDto)
+        {
+            var response = await categoryService.UpdateSubCategoryAsync(id, postDto);
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -49,25 +84,66 @@ namespace AntomiApi.Controllers
            
         }
 
-        [HttpGet("{id}")]
+        [Route("DeleteMarka/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteMarka(int id)
+        {
+            await categoryService.DeleteMarka(id);
+            return Ok();
+        }
+
+        [Route("DeleteSubCategory/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteSubCategory(int id)
+        {
+            await categoryService.DeleteSubCategory(id);
+            return Ok();
+        }
+        [Route("GetCateogory/{id}")]
+        [HttpGet()]
         public async Task<IActionResult> Get(int id)
         {
-            //try
-            //{
-            //    return Ok(await categoryService.GetByIdAsync(id));
-            //}
-            //catch (ItemNotFoundException exp)
-            //{
-            //    return StatusCode(404, exp.Message);
-            //}
+         
             return Ok(await categoryService.GetByIdAsync(id));
         }
 
+        [Route("GetMarka/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetMarka(int id)
+        {
+            var response = await categoryService.GetMarkaAsync(id);
+            return Ok(response);
+        }
+
+        [Route("GetSubCategory/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetSubCategory(int id)
+        {
+            var response = await categoryService.GetSubCategoryAsync(id);
+            return Ok(response);
+        }
+
+        [Route("GetAllCategory/{PageIndex}")]
         [HttpGet]
         public async Task<IActionResult> GetAll(int PageIndex)
         {
             return Ok(await categoryService.GetAll(PageIndex));
         }
 
+        [Route("GetAllMarka")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllMarka()
+        {
+            var response = await categoryService.GetAllMarka();
+            return Ok(response);
+        }
+
+        [Route("GetAllSubCategory")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubCategory()
+        {
+            var response = await categoryService.GetAllSubCategory();
+            return Ok(response);
+        }
     }
 }

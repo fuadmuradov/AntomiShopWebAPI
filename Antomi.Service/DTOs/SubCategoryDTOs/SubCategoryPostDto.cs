@@ -11,6 +11,7 @@ namespace Antomi.Service.DTOs.SubCategoryDTOs
     public class SubCategoryPostDto
     {
         public string Name { get; set; }
+        public int CategoryId { get; set; }
     }
 
     public class SubCategoryPostDtoValidation : AbstractValidator<SubCategory>

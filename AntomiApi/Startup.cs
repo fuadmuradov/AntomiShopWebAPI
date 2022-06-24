@@ -53,13 +53,21 @@ namespace AntomiApi
             services.AddDbContext<AntomiDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
+            services.AddControllersWithViews()
+      .AddNewtonsoftJson(options =>
+      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+  );
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<AntomiDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
-           // services.AddScoped<IAboutService, AboutService>();
-            services.AddAutoMapper(x => x.AddProfile(new MapProfile()));
+            services.AddScoped<IAboutService, AboutService>();
+            services.AddAutoMapper(opt =>
+            {
+                opt.AddProfile(new MapProfile());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

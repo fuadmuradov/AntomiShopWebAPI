@@ -3,6 +3,8 @@ using Antomi.Core.Entities;
 using Antomi.Core.IRepositories;
 using Antomi.Service.DTOs;
 using Antomi.Service.DTOs.CategoryDTOs;
+using Antomi.Service.DTOs.MarkaDTOs;
+using Antomi.Service.DTOs.SubCategoryDTOs;
 using Antomi.Service.Exceptions;
 using Antomi.Service.Interfaces;
 using AutoMapper;
@@ -40,6 +42,24 @@ namespace Antomi.Service.Implementations
 
         }
 
+        public async Task<MarkaGetDto> CreateMarkaAsync(MarkaPostDto postDto)
+        {
+            Marka marka = mapper.Map<Marka>(postDto);
+            await unitOfWork.MarkaRepository.AddAsync(marka);
+            await unitOfWork.MarkaRepository.SaveDbAsync();
+            MarkaGetDto markaGet = mapper.Map<MarkaGetDto>(marka);
+            return markaGet;
+        }
+
+        public async Task<SubCategoryGetDto> CreateSubCategoryAsync(SubCategoryPostDto postDto)
+        {
+            SubCategory subCategory = mapper.Map<SubCategory>(postDto);
+             unitOfWork.SubCategoryRepository.AddAsync(subCategory).Wait();
+             unitOfWork.SubCategoryRepository.SaveDbAsync().Wait();
+            SubCategoryGetDto subCategoryGetDto = mapper.Map<SubCategoryGetDto>(subCategory);
+            return subCategoryGetDto;
+        }
+
         public async Task Delete(int id)
         {
             if (!await unitOfWork.CategoryRepository.IsExistAsync(x => x.Id == id && x.isDeleted == false))
@@ -50,6 +70,25 @@ namespace Antomi.Service.Implementations
             await unitOfWork.CategoryRepository.SaveDbAsync();
         }
 
+        public async Task DeleteMarka(int id)
+        {
+            Marka marka = await unitOfWork.MarkaRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (marka == null)
+                throw new ItemNotFoundException("Item Not Found by Id(" + id + ")");
+            unitOfWork.MarkaRepository.Remove(marka);
+            await unitOfWork.MarkaRepository.SaveDbAsync();
+
+        }
+
+        public async Task DeleteSubCategory(int id)
+        {
+            SubCategory subCategory = await unitOfWork.SubCategoryRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (subCategory == null)
+                throw new ItemNotFoundException("Item Not Found by Id(" + id + ")");
+            unitOfWork.SubCategoryRepository.Remove(subCategory);
+            await unitOfWork.SubCategoryRepository.SaveDbAsync();
+        }
+
         public async Task<PaginatedListDto<CategoryListItemDto>> GetAll(int PageIndex)
         {
             if (PageIndex < 0)
@@ -57,9 +96,26 @@ namespace Antomi.Service.Implementations
             string PageSizeStr =await unitOfWork.SettingRepository.GetValue("PageSize");
             int PageSize = Convert.ToInt32(PageSizeStr);
             var query = unitOfWork.CategoryRepository.GetAll(x => !x.isDeleted);
-            var items = query.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            var listItem = new PaginatedListDto<CategoryListItemDto>(mapper.Map<List<CategoryListItemDto>>(items), query.Count(), PageSize, PageIndex);
+            var items = query.Skip((PageIndex - 1) * PageSize).Take(PageSize).Select(x=> new CategoryListItemDto {Id = x.Id, Name=x.Name }).ToList();
+            var listItem = new PaginatedListDto<CategoryListItemDto>(items, query.Count(), PageSize, PageIndex);
             return listItem;
+        }
+
+        public async Task<List<MarkaGetDto>> GetAllMarka()
+        {
+            List<MarkaGetDto> markas =  unitOfWork.MarkaRepository.GetAll(x => x.Id > 0)
+                .Select(x=> new MarkaGetDto
+                { Id = x.Id,
+                Name = x.Name
+                }).ToList();
+            return markas;
+        }
+
+        public async Task<List<SubCategoryGetDto>> GetAllSubCategory()
+        {
+            List<SubCategoryGetDto> subCategoryGets = unitOfWork.SubCategoryRepository.GetAll(x => x.Id > 0, "Category")
+                  .Select(x => new SubCategoryGetDto { Id = x.Id, Name = x.Name, CategoryName = x.Category.Name }).ToList();
+            return subCategoryGets;
         }
 
         public async Task<CategoryGetDto> GetByIdAsync(int id)
@@ -75,6 +131,25 @@ namespace Antomi.Service.Implementations
                 Name = category.Name
             };
             return categoryGetDto;
+
+        }
+
+        public async Task<MarkaGetDto> GetMarkaAsync(int id)
+        {
+            Marka marka = await unitOfWork.MarkaRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (marka == null)
+                throw new ItemNotFoundException("Item Not Found by Id(" + id + ")");
+            MarkaGetDto markaGet = mapper.Map<MarkaGetDto>(marka);
+            return markaGet;
+        }
+
+        public async Task<SubCategoryGetDto> GetSubCategoryAsync(int id)
+        {
+            SubCategory subCategory = await unitOfWork.SubCategoryRepository.GetAsync(x => x.Id == id && x.isDeleted == false, "Category");
+            if (subCategory == null)
+                throw new ItemNotFoundException("Item Not Found by Id(" + id + ")");
+            SubCategoryGetDto subCategoryGet = mapper.Map<SubCategoryGetDto>(subCategory);
+            return subCategoryGet;
 
         }
 
@@ -94,7 +169,35 @@ namespace Antomi.Service.Implementations
             };
             return categoryGetDto;
 
+        }
 
+        public async Task<MarkaGetDto> UpdateMarkaAsync(int id, MarkaPostDto postDto)
+        {
+            if (await unitOfWork.MarkaRepository.IsExistAsync(x => x.Name.ToUpper() == postDto.Name.ToUpper() && x.isDeleted == false))
+                throw new RecordDublicateException("("+postDto.Name+")  Name Already Exist");
+            Marka existMarka = await unitOfWork.MarkaRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (existMarka == null)
+                throw new ItemNotFoundException("Item Not Found by Id(" + id + ")");
+            existMarka.Name = postDto.Name;
+            existMarka.ModifiedAt = DateTime.UtcNow.AddHours(+4);
+            await unitOfWork.MarkaRepository.SaveDbAsync();
+            MarkaGetDto markaGet = mapper.Map<MarkaGetDto>(existMarka);
+            return markaGet;
+        }
+
+        public async Task<SubCategoryGetDto> UpdateSubCategoryAsync(int id, SubCategoryPostDto postDto)
+        {
+            if (await unitOfWork.SubCategoryRepository.IsExistAsync(x => x.Name.ToUpper() == postDto.Name.ToUpper() && x.isDeleted == false))
+                throw new RecordDublicateException("(" + postDto.Name + ")  Name Already Exist");
+            SubCategory existSubCategory = await unitOfWork.SubCategoryRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (existSubCategory == null)
+                throw new ItemNotFoundException("Item Not Found by Id(" + id + ")");
+            existSubCategory.Name = postDto.Name;
+            existSubCategory.ModifiedAt = DateTime.UtcNow.AddHours(+4);
+            existSubCategory.CategoryId = postDto.CategoryId;
+            await unitOfWork.SubCategoryRepository.SaveDbAsync();
+            SubCategoryGetDto markaGet = mapper.Map<SubCategoryGetDto>(existSubCategory);
+            return markaGet;
         }
     }
 }

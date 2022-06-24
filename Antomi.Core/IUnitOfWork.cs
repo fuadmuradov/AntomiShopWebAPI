@@ -16,6 +16,8 @@ namespace Antomi.Core
         IAboutRepository AboutRepository { get; }
         ITestimonialRepository TestimonialRepository { get; }
         IQuestionRepository QuestionRepository { get; }
+        ISubCategoryRepository SubCategoryRepository { get; }
+        IMarkaRepository MarkaRepository { get; }
         int Commit();
         Task<int> CommitAsync();
     }
