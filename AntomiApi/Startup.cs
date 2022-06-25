@@ -45,7 +45,7 @@ namespace AntomiApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers().AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<CategoryPostDto>());
+            services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CategoryPostDto>());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AntomiApi", Version = "v1" });
@@ -54,15 +54,18 @@ namespace AntomiApi
             options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
             services.AddControllersWithViews()
-      .AddNewtonsoftJson(options =>
-      options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-  );
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddIdentity<AppUser, IdentityRole>()
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<AntomiDbContext>();
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<AntomiDbContext>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IAboutService, AboutService>();
+            services.AddScoped<IProductService, ProductService>();
+
             services.AddAutoMapper(opt =>
             {
                 opt.AddProfile(new MapProfile());

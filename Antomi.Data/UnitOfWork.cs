@@ -21,6 +21,14 @@ namespace Antomi.Data
         IAboutRepository aboutRepository;
         ITestimonialRepository testimonialRepository;
         IQuestionRepository questionRepository;
+        IProductColorImageRepository productColorImageRepository;
+        IProductColorRepository productColorRepository;
+        IProductRepository productRepository;
+        ISpecificationRepository specificationRepository;
+        IDiscountRepository discountRepository;
+        ICommentRepository commentRepository;
+        IPhoneSpecRepository phoneSpecRepository;
+        INotebookSpecRepository notebookSpecRepository;
         private readonly AntomiDbContext context;
 
         public UnitOfWork(AntomiDbContext context)
@@ -41,6 +49,22 @@ namespace Antomi.Data
         public ISubCategoryRepository SubCategoryRepository => subCategoryRepository ?? new SubCategoryRepository(context);
 
         public IMarkaRepository MarkaRepository => markaRepository ?? new MarkaRepository(context);
+
+        public ISpecificationRepository SpecificationRepository => specificationRepository ?? new SpecificationRepository(context);
+
+        public IProductRepository ProductRepository => productRepository ?? new ProductRepository(context);
+
+        public IProductColorRepository ProductColorRepository => productColorRepository ?? new ProductColorRepository(context);
+
+        public IProductColorImageRepository ProductColorImageRepository => productColorImageRepository ?? new ProductColorImageRepository(context);
+
+        public IDiscountRepository DiscountRepository => discountRepository ?? new DiscountRepository(context);
+
+        public ICommentRepository CommentRepository => commentRepository ?? new CommentRepository(context);
+
+        public IPhoneSpecRepository PhoneSpecRepository => phoneSpecRepository ?? new PhoneSpecRepository(context);
+
+        public INotebookSpecRepository NotebookSpecRepository => notebookSpecRepository ?? new NotebookSpecRepository(context);
 
         public int Commit()
         {

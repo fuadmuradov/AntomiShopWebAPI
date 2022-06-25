@@ -13,5 +13,6 @@ namespace Antomi.Core.Entities
         public int AddressId { get; set; }
         public Address Address { get; set; }
         public double TotalPrice { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

@@ -15,5 +15,7 @@ namespace Antomi.Core.Entities
         public int BlogId { get; set; }
         public Blog Blog { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<ReplyComment> ReplyComments { get; set; }
+
     }
 }

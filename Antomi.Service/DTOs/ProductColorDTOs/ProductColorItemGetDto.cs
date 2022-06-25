@@ -1,16 +1,16 @@
-﻿using Antomi.Service.DTOs.CategoryDTOs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Antomi.Service.DTOs.SubCategoryDTOs
+namespace Antomi.Service.DTOs.ProductColorDTOs
 {
-    public class SubCategoryGetDto
+    public class ProductColorItemGetDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public CategoryGetDto Category { get; set; }
+        public double Price { get; set; }
+        public int Count { get; set; }
     }
 }

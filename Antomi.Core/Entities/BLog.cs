@@ -17,6 +17,7 @@ namespace Antomi.Core.Entities
         public string Emphasis { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        public List<BlogComment> BlogComments { get; set; }
 
     }
 }

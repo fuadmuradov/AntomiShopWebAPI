@@ -18,6 +18,14 @@ namespace Antomi.Core
         IQuestionRepository QuestionRepository { get; }
         ISubCategoryRepository SubCategoryRepository { get; }
         IMarkaRepository MarkaRepository { get; }
+        ISpecificationRepository SpecificationRepository { get; }
+        IProductRepository ProductRepository { get; }
+        IProductColorRepository ProductColorRepository { get; }
+        IProductColorImageRepository ProductColorImageRepository { get; }
+        IDiscountRepository DiscountRepository { get; }
+        ICommentRepository CommentRepository { get; }
+        IPhoneSpecRepository PhoneSpecRepository { get; }
+        INotebookSpecRepository NotebookSpecRepository { get; }
         int Commit();
         Task<int> CommitAsync();
     }
