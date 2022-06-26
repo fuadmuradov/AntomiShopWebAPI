@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Antomi.Service.DTOs.SubCategoryToMarkaDTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace Antomi.Service.DTOs.MarkaDTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public List<SubCategoryMarkaGetDto> SubCategoryToMarkas { get; set; }
     }
 }

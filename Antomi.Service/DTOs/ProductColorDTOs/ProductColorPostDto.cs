@@ -12,7 +12,7 @@ namespace Antomi.Service.DTOs.ProductColorDTOs
         public string Name { get; set; }
         public double Price { get; set; }
         public int Count { get; set; }
-        public string ProductName { get; set; }
+        public int ProductId { get; set; }
     }
 
     public class ProductColorPostDtoValidation : AbstractValidator<ProductColorPostDto>
@@ -22,7 +22,7 @@ namespace Antomi.Service.DTOs.ProductColorDTOs
             RuleFor(x => x.Name).NotEmpty().NotNull().MaximumLength(300);
             RuleFor(x => x.Price).NotEmpty().NotNull();
             RuleFor(x => x.Count).NotEmpty().NotNull();
-            RuleFor(x => x.ProductName).NotEmpty().NotNull().MaximumLength(150);
+            RuleFor(x => x.ProductId).NotEmpty().NotNull();
 
         }
     }

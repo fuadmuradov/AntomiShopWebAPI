@@ -29,6 +29,9 @@ namespace Antomi.Data
         ICommentRepository commentRepository;
         IPhoneSpecRepository phoneSpecRepository;
         INotebookSpecRepository notebookSpecRepository;
+        IBlogRepository blogRepository;
+        IBlogCommentRepository blogCommentRepository;
+        IReplyCommentRepository replyCommentRepository;
         private readonly AntomiDbContext context;
 
         public UnitOfWork(AntomiDbContext context)
@@ -65,6 +68,12 @@ namespace Antomi.Data
         public IPhoneSpecRepository PhoneSpecRepository => phoneSpecRepository ?? new PhoneSpecRepository(context);
 
         public INotebookSpecRepository NotebookSpecRepository => notebookSpecRepository ?? new NotebookSpecRepository(context);
+
+        public IBlogRepository BlogRepository => blogRepository ?? new BlogRepository(context);
+
+        public IBlogCommentRepository BlogCommentRepository => blogCommentRepository ?? new BLogCommentRepository(context);
+
+        public IReplyCommentRepository ReplyCommentRepository => replyCommentRepository ?? new ReplyCommentRepository(context);
 
         public int Commit()
         {

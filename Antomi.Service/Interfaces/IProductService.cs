@@ -36,25 +36,25 @@ namespace Antomi.Service.Interfaces
          Task DeleteProductColorImageAsync(int id);
 
         //Specification Entity
-        //public Task<SpecificationGetDto> CreateSpecificationAsync(SpecificationPostDto postDto);
-        //public Task<SpecificationGetDto> UpdateSpecificationAsync(int id, SpecificationPostDto postDto);
-        //public Task<SpecificationGetDto> GetSpecificationAsync(int id);
-        //public Task<List<SpecificationGetDto>> GetAllSpecificationAsync();
-        //public Task DeleteSpecificationAsync(int id);
+        public Task<SpecificationGetDto> CreateSpecificationAsync(SpecificationPostDto postDto);
+        public Task<SpecificationGetDto> UpdateSpecificationAsync(int id, SpecificationPostDto postDto);
+        public Task<SpecificationGetDto> GetSpecificationAsync(int id);
+        public Task<List<SpecificationGetDto>> GetAllSpecificationAsync(int id);
+        public Task DeleteSpecificationAsync(int id);
 
         //PhoneSpecification Entity
-        //public Task<PhoneSpecGetDto> CreatePhoneSpecAsync(PhoneSpecPostDto postDto);
-        //public Task<PhoneSpecGetDto> UpdatePhoneSpecAsync(int id, PhoneSpecPostDto postDto);
-        //public Task<PhoneSpecGetDto> GetPhoneSpecAsync(int id);
-        //public Task<List<PhoneSpecGetDto>> GetAllPhoneSpecAsync();
-        //public Task DeletePhoneSpecAsync(int id);
+        public Task<PhoneSpecGetDto> CreatePhoneSpecAsync(PhoneSpecPostDto postDto);
+        public Task<PhoneSpecGetDto> UpdatePhoneSpecAsync(int id, PhoneSpecPostDto postDto);
+        public Task<PhoneSpecGetDto> GetPhoneSpecAsync(int id);
+        public Task<List<PhoneSpecGetDto>> GetAllPhoneSpecAsync();
+        public Task DeletePhoneSpecAsync(int id);
 
         //PhoneSpecification Entity
-        //public Task<NotebookSpecGetDto> CreateNotebookSpecAsync(NotebookSpecPostDto postDto);
-        //public Task<NotebookSpecGetDto> UpdateNotebookSpecAsync(int id, NotebookSpecPostDto postDto);
-        //public Task<NotebookSpecGetDto> GetNotebookSpecAsync(int id);
-        //public Task<List<NotebookSpecGetDto>> GetAllNotebookSpecAsync();
-        //public Task DeleteNotebookSpecAsync(int id);
+        public Task<NotebookSpecGetDto> CreateNotebookSpecAsync(NotebookSpecPostDto postDto);
+        public Task<NotebookSpecGetDto> UpdateNotebookSpecAsync(int id, NotebookSpecPostDto postDto);
+        public Task<NotebookSpecGetDto> GetNotebookSpecAsync(int id);
+        public Task<List<NotebookSpecGetDto>> GetAllNotebookSpecAsync();
+        public Task DeleteNotebookSpecAsync(int id);
     }
 
 }

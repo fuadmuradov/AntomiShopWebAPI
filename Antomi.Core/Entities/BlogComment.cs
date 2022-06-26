@@ -17,5 +17,6 @@ namespace Antomi.Core.Entities
         public DateTime CreatedAt { get; set; }
         public List<ReplyComment> ReplyComments { get; set; }
 
+       
     }
 }

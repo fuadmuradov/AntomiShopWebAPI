@@ -12,7 +12,7 @@ namespace Antomi.Service.DTOs.ProductColorImageDTOs
     {
         public string Image { get; set; }
         public bool IsMain { get; set; }
-        public string ProductColorName { get; set; }
+        public int ProductColorId { get; set; }
     }
 
     public class ProductColorImagePostDtoValidation : AbstractValidator<ProductColorImagePostDto>
@@ -20,7 +20,7 @@ namespace Antomi.Service.DTOs.ProductColorImageDTOs
         public ProductColorImagePostDtoValidation()
         {
             RuleFor(x => x.Image).NotEmpty().NotNull();
-            RuleFor(x => x.ProductColorName).NotEmpty().NotNull();
+            RuleFor(x => x.ProductColorId).NotEmpty().NotNull();
         }
     }
 }

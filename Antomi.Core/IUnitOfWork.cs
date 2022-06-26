@@ -26,6 +26,9 @@ namespace Antomi.Core
         ICommentRepository CommentRepository { get; }
         IPhoneSpecRepository PhoneSpecRepository { get; }
         INotebookSpecRepository NotebookSpecRepository { get; }
+        IBlogRepository BlogRepository { get; }
+        IBlogCommentRepository BlogCommentRepository { get; }
+        IReplyCommentRepository ReplyCommentRepository { get; }
         int Commit();
         Task<int> CommitAsync();
     }

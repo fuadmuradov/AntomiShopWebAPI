@@ -6,6 +6,7 @@ using Antomi.Service.DTOs.PhoneSpecDTOs;
 using Antomi.Service.DTOs.ProductColorDTOs;
 using Antomi.Service.DTOs.ProductColorImageDTOs;
 using Antomi.Service.DTOs.ProductDTOs;
+using Antomi.Service.DTOs.SpecificationDTOs;
 using Antomi.Service.Exceptions;
 using Antomi.Service.Interfaces;
 using AutoMapper;
@@ -27,6 +28,25 @@ namespace Antomi.Service.Implementations
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
+
+        public async Task<NotebookSpecGetDto> CreateNotebookSpecAsync(NotebookSpecPostDto postDto)
+        {
+            NotebookSpecification notebook = mapper.Map<NotebookSpecification>(postDto);
+            await unitOfWork.NotebookSpecRepository.AddAsync(notebook);
+            await unitOfWork.NotebookSpecRepository.SaveDbAsync();
+            NotebookSpecGetDto notebookSpecGet = mapper.Map<NotebookSpecGetDto>(notebook);
+            return notebookSpecGet;
+        }
+
+        public async Task<PhoneSpecGetDto> CreatePhoneSpecAsync(PhoneSpecPostDto postDto)
+        {
+            PhoneSpecification phone = mapper.Map<PhoneSpecification>(postDto);
+            await unitOfWork.PhoneSpecRepository.AddAsync(phone);
+            await unitOfWork.PhoneSpecRepository.SaveDbAsync();
+            PhoneSpecGetDto phoneSpecGet = mapper.Map<PhoneSpecGetDto>(phone);
+            return phoneSpecGet;
+        }
+
         public async Task<ProductGetDto> CreateProductAsync(ProductPostDto postDto)
         {
             Product product = mapper.Map<Product>(postDto);
@@ -53,6 +73,33 @@ namespace Antomi.Service.Implementations
             await unitOfWork.ProductColorImageRepository.SaveDbAsync();
             ProductColorImageGetDto productColorImageGet = mapper.Map<ProductColorImageGetDto>(productColorImage);
             return productColorImageGet;
+        }
+
+        public async Task<SpecificationGetDto> CreateSpecificationAsync(SpecificationPostDto postDto)
+        {
+            Specification spec = mapper.Map<Specification>(postDto);
+            await unitOfWork.SpecificationRepository.AddAsync(spec);
+            await unitOfWork.SpecificationRepository.SaveDbAsync();
+            SpecificationGetDto specGet = mapper.Map<SpecificationGetDto>(spec);
+            return specGet;
+        }
+
+        public async Task DeleteNotebookSpecAsync(int id)
+        {
+            NotebookSpecification specification = await unitOfWork.NotebookSpecRepository.GetAsync(x => x.Id == id);
+            if (specification == null)
+                throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
+            unitOfWork.NotebookSpecRepository.Remove(specification);
+            await unitOfWork.NotebookSpecRepository.SaveDbAsync();
+        }
+
+        public async Task DeletePhoneSpecAsync(int id)
+        {
+            PhoneSpecification phoneSpecification = await unitOfWork.PhoneSpecRepository.GetAsync(x => x.Id == id);
+            if (phoneSpecification == null)
+                throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
+            unitOfWork.PhoneSpecRepository.Remove(phoneSpecification);
+            await unitOfWork.PhoneSpecRepository.SaveDbAsync();
         }
 
         public async Task DeleteProductAsync(int id)
@@ -83,74 +130,204 @@ namespace Antomi.Service.Implementations
             await unitOfWork.ProductColorImageRepository.SaveDbAsync();
         }
 
+        public async Task DeleteSpecificationAsync(int id)
+        {
+            Specification specification = await unitOfWork.SpecificationRepository.GetAsync(x => x.Id == id);
+            if (specification == null)
+                throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
+            unitOfWork.SpecificationRepository.Remove(specification);
+            await unitOfWork.SpecificationRepository.SaveDbAsync();
+        }
+
+        public async Task<List<NotebookSpecGetDto>> GetAllNotebookSpecAsync()
+        {
+            List<NotebookSpecification> notebookSpecifications = unitOfWork.NotebookSpecRepository.GetAll(x => x.Id > 0, "Product").ToList();
+            List<NotebookSpecGetDto> notebookSpecGets = mapper.Map<List<NotebookSpecification>, List<NotebookSpecGetDto>>(notebookSpecifications);
+            return notebookSpecGets;
+        }
+
+        public async Task<List<PhoneSpecGetDto>> GetAllPhoneSpecAsync()
+        {
+            List<PhoneSpecification> phoneSpecifications = unitOfWork.PhoneSpecRepository.GetAll(x => x.Id > 0, "Product").ToList();
+            List<PhoneSpecGetDto> phoneSpecGets = mapper.Map<List<PhoneSpecification>, List<PhoneSpecGetDto>>(phoneSpecifications);
+            return phoneSpecGets;
+        }
+
         public async Task<List<ProductGetDto>> GetAllProductAsync()
         {
-            List<Product> product = unitOfWork.ProductRepository.GetAll(x => x.isDeleted == false, "Marka", "SubCategory",
-                "Specification", "Comment", "Comment.AppUser", "NotebookSpecification", "PhoneSpecification").ToList();
+            List<Product> product = unitOfWork.ProductRepository.GetAll(x => x.isDeleted == false, "Marka", "SubCategory","ProductColors",
+              "Specifications", "Comments", "NotebookSpecifications", "PhoneSpecifications").ToList();
             List<ProductGetDto> productGets = mapper.Map<List<Product>, List<ProductGetDto>>(product);
-            //.Select(x => new ProductGetDto
-            //{
-            //    Id = x.Id,
-            //    Model = x.Model,
-            //    Description = x.Description,
-            //    MarkaName = x.Marka.Name,
-            //    SubCategoryName = x.SubCategory.Name,
-            //    Comments = x.Comments.Select(y => new CommentGetDto
-            //    {
-            //        Id = y.Id,
-            //        AppUserName = y.AppUser.UserName,
-            //        CretadAt = y.CretadAt,
-            //        Email = y.Email,
-            //        isActive = y.isActive,
-            //        ProductName = y.Product.Model,
-            //        Text = y.Text,
-            //        Username = y.Username
-            //    }).ToList(),
-            //     NotebookSpecifications = mapper.Map<List<NotebookSpecGetDto>>(x.NotebookSpecifications),
-            //     PhoneSpecifications = mapper.Map<List<PhoneSpecGetDto>>(x.PhoneSpecifications),
-            //}).ToList();
-
+           
             return productGets;
         }
 
-        public Task<List<ProductColorGetDto>> GetAllProductColorAsync()
+        public async Task<List<ProductColorGetDto>> GetAllProductColorAsync()
         {
-            throw new NotImplementedException();
+            List<ProductColor> productColor = unitOfWork.ProductColorRepository.GetAll(x => x.Id > 0, "Product", "ProductColorImages", "Discounts").ToList();
+            List<ProductColorGetDto> productColorGets = mapper.Map<List<ProductColor>, List<ProductColorGetDto>>(productColor);
+            return productColorGets;
         }
 
-        public Task<List<ProductColorImageGetDto>> GetAllProductColorImageAsync()
+        public async Task<List<ProductColorImageGetDto>> GetAllProductColorImageAsync()
         {
-            throw new NotImplementedException();
+            List<ProductColorImage> productColorImages = unitOfWork.ProductColorImageRepository.GetAll(x => x.isDeleted == false, "ProductColor").ToList();
+            List<ProductColorImageGetDto> productColorImageGetDtos = mapper.Map<List<ProductColorImage>, List<ProductColorImageGetDto>>(productColorImages);
+            return productColorImageGetDtos;
         }
 
-        public Task<ProductGetDto> GetProductAsync(int id)
+        public async Task<List<SpecificationGetDto>> GetAllSpecificationAsync(int id)
         {
-            throw new NotImplementedException();
+            List<Specification> specifications = unitOfWork.SpecificationRepository.GetAll(x => x.Id == id, "Product").ToList();
+            List<SpecificationGetDto> specificationGetDtos = mapper.Map<List<Specification>, List<SpecificationGetDto>>(specifications);
+            return specificationGetDtos;
         }
 
-        public Task<ProductColorGetDto> GetProductColorAsync(int id)
+        public async Task<NotebookSpecGetDto> GetNotebookSpecAsync(int id)
         {
-            throw new NotImplementedException();
+            NotebookSpecification notebookSpecification = await unitOfWork.NotebookSpecRepository.GetAsync(x => x.Id == id);
+            if (notebookSpecification == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            NotebookSpecGetDto notebookSpecGetDto = mapper.Map<NotebookSpecGetDto>(notebookSpecification);
+            return notebookSpecGetDto;
         }
 
-        public Task<ProductColorImageGetDto> GetProductColorImageAsync(int id)
+        public async Task<PhoneSpecGetDto> GetPhoneSpecAsync(int id)
         {
-            throw new NotImplementedException();
+            PhoneSpecification phoneSpecification = await unitOfWork.PhoneSpecRepository.GetAsync(x => x.Id == id);
+            if (phoneSpecification == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            PhoneSpecGetDto phoneSpecGetDto = mapper.Map<PhoneSpecGetDto>(phoneSpecification);
+            return phoneSpecGetDto;
         }
 
-        public Task<ProductGetDto> UpdateProductAsync(int id, ProductPostDto postDto)
+        public async Task<ProductGetDto> GetProductAsync(int id)
         {
-            throw new NotImplementedException();
+            Product product = await unitOfWork.ProductRepository.GetAsync(x => x.Id == id && x.isDeleted == false, "Marka", "SubCategory", "ProductColors"
+              , "Specifications", "Comments", "NotebookSpecifications", "PhoneSpecifications");
+            if (product == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            ProductGetDto productColorGet = mapper.Map<ProductGetDto>(product);
+            return productColorGet;
         }
 
-        public Task<ProductColorGetDto> UpdateProductColorAsync(int id, ProductColorPostDto postDto)
+        public async Task<ProductColorGetDto> GetProductColorAsync(int id)
         {
-            throw new NotImplementedException();
+            ProductColor productColor = await unitOfWork.ProductColorRepository.GetAsync(x => x.Id == id, "Product", "ProductColorImages", "Discounts");
+            if (productColor == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            ProductColorGetDto productColorGet = mapper.Map<ProductColorGetDto>(productColor);
+            return productColorGet;
         }
 
-        public Task<ProductColorImageGetDto> UpdateProductColorImageAsync(int id, ProductColorImagePostDto postDto)
+        public async Task<ProductColorImageGetDto> GetProductColorImageAsync(int id)
         {
-            throw new NotImplementedException();
+            ProductColorImage productColorImage = await unitOfWork.ProductColorImageRepository.GetAsync(x=>x.Id==id && x.isDeleted==false, "ProductColor");
+            if (productColorImage == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            ProductColorImageGetDto productColorImageGet = mapper.Map<ProductColorImageGetDto>(productColorImage);
+            return productColorImageGet;
+        }
+
+        public async Task<SpecificationGetDto> GetSpecificationAsync(int id)
+        {
+            Specification specification = await unitOfWork.SpecificationRepository.GetAsync(x => x.Id == id);
+            if (specification == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            SpecificationGetDto specGetDto = mapper.Map<SpecificationGetDto>(specification);
+            return specGetDto;
+        }
+
+
+        public async Task<NotebookSpecGetDto> UpdateNotebookSpecAsync(int id, NotebookSpecPostDto postDto)
+        {
+            NotebookSpecification notebookSpecification = await unitOfWork.NotebookSpecRepository.GetAsync(x => x.Id == id);
+            if (notebookSpecification == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            notebookSpecification.Graphics = postDto.Graphics;
+            notebookSpecification.OS = postDto.OS;
+            notebookSpecification.Processor = postDto.Processor;
+            notebookSpecification.ProductId = postDto.ProductId;
+            notebookSpecification.RAM = postDto.RAM;
+            notebookSpecification.Storage = postDto.Storage;
+
+            NotebookSpecGetDto notebookSpecGetDto = mapper.Map<NotebookSpecGetDto>(notebookSpecification);
+            return notebookSpecGetDto;
+        
+        }
+
+        public async Task<PhoneSpecGetDto> UpdatePhoneSpecAsync(int id, PhoneSpecPostDto postDto)
+        {
+            PhoneSpecification phoneSpecification = await unitOfWork.PhoneSpecRepository.GetAsync(x => x.Id == id);
+            if (phoneSpecification == null)
+                throw new ItemNotFoundException("Item Not Found ny Id (" + id + ")");
+            phoneSpecification.DisplayType = postDto.DisplayType;
+            phoneSpecification.MainCamera = postDto.MainCamera;
+            phoneSpecification.SelfieCamera = postDto.SelfieCamera;
+            phoneSpecification.OS = postDto.OS;
+            phoneSpecification.Processor = postDto.Processor;
+            phoneSpecification.ProductId = postDto.ProductId;
+            phoneSpecification.RAM = postDto.RAM;
+            phoneSpecification.Storage = postDto.Storage;
+
+            PhoneSpecGetDto phoneSpecGetDto = mapper.Map<PhoneSpecGetDto>(phoneSpecification);
+            return phoneSpecGetDto;
+        }
+
+        public async Task<ProductGetDto> UpdateProductAsync(int id, ProductPostDto postDto)
+        {
+            Product existProduct = await unitOfWork.ProductRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (existProduct == null)
+                throw new ItemNotFoundException("Item Not Found By Id (" + id + ")");
+            existProduct.Model = postDto.Model;
+            existProduct.Description = postDto.Description;
+            existProduct.MarkaId = postDto.MarkaId;
+            existProduct.SubCategoryId = postDto.SubCategoryId;
+            await unitOfWork.ProductRepository.SaveDbAsync();
+            ProductGetDto productGet = mapper.Map<ProductGetDto>(existProduct);
+            return productGet;
+        }
+
+        public async Task<ProductColorGetDto> UpdateProductColorAsync(int id, ProductColorPostDto postDto)
+        {
+            ProductColor existProductColor = await unitOfWork.ProductColorRepository.GetAsync(x => x.Id == id);
+            if (existProductColor == null)
+                throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
+            existProductColor.Name = postDto.Name;
+            existProductColor.Price = postDto.Price;
+            existProductColor.Count = postDto.Count;
+            existProductColor.ProductId = postDto.ProductId;
+            await unitOfWork.ProductColorRepository.SaveDbAsync();
+            ProductColorGetDto productColorGet = mapper.Map<ProductColorGetDto>(existProductColor);
+            return productColorGet;
+        }
+
+        public async Task<ProductColorImageGetDto> UpdateProductColorImageAsync(int id, ProductColorImagePostDto postDto)
+        {
+            ProductColorImage existProductColorImage = await unitOfWork.ProductColorImageRepository.GetAsync(x => x.Id == id && x.isDeleted == false);
+            if (existProductColorImage == null)
+                throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
+            existProductColorImage.IsMain = postDto.IsMain;
+            existProductColorImage.Image = postDto.Image;
+            existProductColorImage.ProductColorId = postDto.ProductColorId;
+
+            ProductColorImageGetDto productColorImageGet = mapper.Map<ProductColorImageGetDto>(existProductColorImage);
+            return productColorImageGet;
+
+        }
+
+        public async Task<SpecificationGetDto> UpdateSpecificationAsync(int id, SpecificationPostDto postDto)
+        {
+            Specification existSpecification = await unitOfWork.SpecificationRepository.GetAsync(x => x.Id == id);
+            if (existSpecification == null)
+                throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
+            existSpecification.Name = postDto.Name;
+            existSpecification.Description = postDto.Description;
+            existSpecification.ProductId = postDto.ProductId;
+
+            SpecificationGetDto specificationGet = mapper.Map<SpecificationGetDto>(existSpecification);
+            return specificationGet;
+
         }
     }
 }

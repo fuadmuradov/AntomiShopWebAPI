@@ -113,8 +113,12 @@ namespace Antomi.Service.Implementations
 
         public async Task<List<SubCategoryGetDto>> GetAllSubCategory()
         {
-            List<SubCategoryGetDto> subCategoryGets = unitOfWork.SubCategoryRepository.GetAll(x => x.Id > 0, "Category")
-                  .Select(x => new SubCategoryGetDto { Id = x.Id, Name = x.Name, CategoryName = x.Category.Name }).ToList();
+            List<SubCategory> subCategories = unitOfWork.SubCategoryRepository.GetAll(x => x.Id > 0, "Category").ToList();
+            List<SubCategoryGetDto> subCategoryGets = mapper.Map<List<SubCategory>, List<SubCategoryGetDto>>(subCategories);
+
+            //List<SubCategoryGetDto> subCategoryGets = unitOfWork.SubCategoryRepository.GetAll(x => x.Id > 0, "Category")
+            //      .Select(x => new SubCategoryGetDto { Id = x.Id, Name = x.Name, CategoryName = x.Category.Name }).ToList();
+
             return subCategoryGets;
         }
 
