@@ -32,6 +32,8 @@ namespace Antomi.Data
         IBlogRepository blogRepository;
         IBlogCommentRepository blogCommentRepository;
         IReplyCommentRepository replyCommentRepository;
+        ISubCategoryMarkaRepository subCategoryMarkaRepository;
+        ISliderRepository sliderRepository;
         private readonly AntomiDbContext context;
 
         public UnitOfWork(AntomiDbContext context)
@@ -74,6 +76,10 @@ namespace Antomi.Data
         public IBlogCommentRepository BlogCommentRepository => blogCommentRepository ?? new BLogCommentRepository(context);
 
         public IReplyCommentRepository ReplyCommentRepository => replyCommentRepository ?? new ReplyCommentRepository(context);
+
+        public ISubCategoryMarkaRepository SubCategoryMarkaRepository => subCategoryMarkaRepository ?? new SubCategoryToMarkaRepository(context);
+
+        public ISliderRepository SliderRepository => sliderRepository ?? new SliderRepository(context);
 
         public int Commit()
         {

@@ -65,6 +65,7 @@ namespace AntomiApi
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IAboutService, AboutService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISliderService, SliderService>();
 
             services.AddAutoMapper(opt =>
             {

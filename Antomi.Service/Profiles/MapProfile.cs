@@ -14,6 +14,7 @@ using Antomi.Service.DTOs.ProductColorImageDTOs;
 using Antomi.Service.DTOs.ProductDTOs;
 using Antomi.Service.DTOs.QuestionDTOs;
 using Antomi.Service.DTOs.ReplyCommentDTOs;
+using Antomi.Service.DTOs.SliderDTOs;
 using Antomi.Service.DTOs.SpecificationDTOs;
 using Antomi.Service.DTOs.SubCategoryDTOs;
 using Antomi.Service.DTOs.SubCategoryToMarkaDTOs;
@@ -72,7 +73,9 @@ namespace Antomi.Service.Profiles
             CreateMap<AppUser, AppUserGetDto>();
             CreateMap<AppUser, AppUserAddressGetDto>();
             CreateMap<AppUserPostDto, AppUser>();
-
+            //Slider Service
+            CreateMap<Slider, SliderGetDto>();
+            CreateMap<SliderPostDto, Slider>();
 
 
         }

@@ -29,6 +29,8 @@ namespace Antomi.Core
         IBlogRepository BlogRepository { get; }
         IBlogCommentRepository BlogCommentRepository { get; }
         IReplyCommentRepository ReplyCommentRepository { get; }
+        ISubCategoryMarkaRepository SubCategoryMarkaRepository { get; }
+        ISliderRepository SliderRepository { get; }
         int Commit();
         Task<int> CommitAsync();
     }

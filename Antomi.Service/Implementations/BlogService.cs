@@ -91,7 +91,7 @@ namespace Antomi.Service.Implementations
 
         public async Task<List<BlogCommentGetDto>> GetAllBlogComment(int id)
         {
-            List<BlogComment> blogComments = unitOfWork.BlogCommentRepository.GetAll(x => x.Id == id, "ReplyComments", "Blog").ToList();
+            List<BlogComment> blogComments = unitOfWork.BlogCommentRepository.GetAll(x => x.BlogId == id, "ReplyComments", "Blog").ToList();
             if(blogComments==null)
                 throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
             List<BlogCommentGetDto> blogCommentGets = mapper.Map<List<BlogComment>, List<BlogCommentGetDto>>(blogComments);
@@ -100,7 +100,7 @@ namespace Antomi.Service.Implementations
 
         public async Task<List<ReplyCommentGetDto>> GetAllReplyComment(int id)
         {
-            List<ReplyComment> replyComments = unitOfWork.ReplyCommentRepository.GetAll(x => x.Id == id, "BlogComment").ToList();
+            List<ReplyComment> replyComments = unitOfWork.ReplyCommentRepository.GetAll(x => x.BlogCommentId == id, "BlogComment").ToList();
             if (replyComments == null)
                 throw new ItemNotFoundException("Item Not Found by Id (" + id + ")");
             List<ReplyCommentGetDto> replyCommentGets = mapper.Map<List<ReplyComment>, List<ReplyCommentGetDto>>(replyComments);

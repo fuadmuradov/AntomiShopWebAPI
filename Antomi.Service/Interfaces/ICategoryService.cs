@@ -2,6 +2,7 @@
 using Antomi.Service.DTOs.CategoryDTOs;
 using Antomi.Service.DTOs.MarkaDTOs;
 using Antomi.Service.DTOs.SubCategoryDTOs;
+using Antomi.Service.DTOs.SubCategoryToMarkaDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,13 @@ namespace Antomi.Service.Interfaces
         Task<SubCategoryGetDto> GetSubCategoryAsync(int id);
         Task<List<SubCategoryGetDto>> GetAllSubCategory();
         Task DeleteSubCategory(int id);
+        //SubCategoryToMarka Entity
+        Task<SubCategoryMarkaGetDto> CreateSubCategoryMarkaAsync(SubCategoryMarkaPostDto postDto);
+        Task<SubCategoryMarkaGetDto> UpdateSubCategoryMarkaAsync(int id, SubCategoryMarkaPostDto postDto);
+        Task<SubCategoryMarkaGetDto> GetSubCategoryMarkaAsync(int id);
+        Task<List<SubCategoryMarkaGetDto>> GetAllSubCategoryMarka();
+        Task DeleteSubCategoryMarkaAsync(int id);
+
 
     }
 }

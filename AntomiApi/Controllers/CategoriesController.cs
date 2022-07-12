@@ -2,6 +2,7 @@
 using Antomi.Service.DTOs.CategoryDTOs;
 using Antomi.Service.DTOs.MarkaDTOs;
 using Antomi.Service.DTOs.SubCategoryDTOs;
+using Antomi.Service.DTOs.SubCategoryToMarkaDTOs;
 using Antomi.Service.Exceptions;
 using Antomi.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -49,6 +50,17 @@ namespace AntomiApi.Controllers
             return StatusCode(201, response);
         }
 
+        [Route("CreateSubCategoryToMarka")]
+        [HttpPost]
+        public async Task<IActionResult> CreateSubCategoryToMarka(SubCategoryMarkaPostDto categoryPost)
+        {
+
+            var response = await categoryService.CreateSubCategoryMarkaAsync(categoryPost);
+            return StatusCode(201, response);
+
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CategoryPostDto categoryPost)
         {
@@ -75,10 +87,17 @@ namespace AntomiApi.Controllers
             return Ok(response);
         }
 
+        [Route("UpdateSubCategoryToMarka/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateSubCateogoryMarka(int id, SubCategoryMarkaPostDto postDto)
+        {
+            var response = await categoryService.UpdateSubCategoryMarkaAsync(id, postDto);
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-           
                 await categoryService.Delete(id);
                 return StatusCode(200);
            
@@ -99,6 +118,15 @@ namespace AntomiApi.Controllers
             await categoryService.DeleteSubCategory(id);
             return Ok();
         }
+
+        [Route("DeleteSubCategoryMarka/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteSubCateogoryMarka(int id)
+        {
+            await categoryService.DeleteSubCategoryMarkaAsync(id);
+            return Ok();
+        }
+
         [Route("GetCateogory/{id}")]
         [HttpGet()]
         public async Task<IActionResult> Get(int id)
@@ -123,6 +151,14 @@ namespace AntomiApi.Controllers
             return Ok(response);
         }
 
+        [Route("GetSubCateogryToMarka/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetSubCategoryMarka(int id)
+        {
+            var response = await categoryService.GetSubCategoryMarkaAsync(id);
+            return Ok(response);
+        }
+
         [Route("GetAllCategory/{PageIndex}")]
         [HttpGet]
         public async Task<IActionResult> GetAll(int PageIndex)
@@ -143,6 +179,14 @@ namespace AntomiApi.Controllers
         public async Task<IActionResult> GetAllSubCategory()
         {
             var response = await categoryService.GetAllSubCategory();
+            return Ok(response);
+        }
+
+        [Route("GetAllSubCategoryToMarka")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubCategoryToMarka()
+        {
+            var response = await categoryService.GetAllSubCategoryMarka();
             return Ok(response);
         }
     }
